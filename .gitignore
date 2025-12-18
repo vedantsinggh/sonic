@@ -1,0 +1,6 @@
+music/
+app
+*.so
+*.lib
+*.out
+music.wav
