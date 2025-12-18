@@ -32,8 +32,8 @@ int main(void){
 	int temp = 0;
 	for(const auto& file : std::filesystem::directory_iterator(path)){
 		if (temp == selected_choice){
-			const std::string f = file.path();
-			std::cout << "Playing: " << f.substr(folder.size()) << std::endl;
+			const std::filesystem::path f = file.path();
+			std::cout << "Playing: " << f.filename().string() << std::endl;
 			music_folder = f;
 			break;
 		}
@@ -42,11 +42,10 @@ int main(void){
 
 	int total_music_count = 0;
 	for(const auto& file : std::filesystem::directory_iterator(music_folder)){
-		const std::string f = file.path();
-		std::cout << total_music_count <<". " << f.substr(music_folder.size() + 1) << std::endl;
+		const std::filesystem::path f = file.path();
+		std::cout << total_music_count <<". " << f.stem().string() << std::endl;
 		total_music_count++;
 	}
-
 
 	std::uniform_int_distribution<int> distrib(0, total_music_count);
 	int rand_music = distrib(gen);
@@ -54,8 +53,8 @@ int main(void){
 	temp = 0;
 	for(const auto& file : std::filesystem::directory_iterator(music_folder)){
 		if (temp == rand_music){
-			const std::string f = file.path();
-			std::cout << "Playing Music: " << f.substr(music_folder.size() + 1) << std::endl;
+			const std::filesystem::path f = file.path();
+			std::cout << "Playing Music: " << f.stem().string() << std::endl;
 			music_file = f;
 			break;
 		}
@@ -63,8 +62,6 @@ int main(void){
 	}
 
 	std::string cmd = "ffplay -nodisp -loglevel quiet -autoexit \"" + music_file + "\"";
-
-	std::cout << "Playing" << std::endl;
 
 	int result = std::system(cmd.c_str());
 
